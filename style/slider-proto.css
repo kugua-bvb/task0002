@@ -1,0 +1,82 @@
+/**
+  *@file slider
+  *@author kuguabvb
+ **/
+ 
+*{
+	margin: 0;
+	padding: 0;
+}
+.slider{
+	width: 630px;
+	height: 354px;
+	margin: 20px auto;
+	position: relative;
+    line-height: 100px;
+    text-align: center;
+	border: 3px solid #ccc;
+	overflow: hidden;
+}
+
+
+
+.slider-item{
+	width: 630px;
+	height: 354px;
+	left: 0;
+	top: 0;
+	display: none;
+	position: absolute; 
+}
+
+.slider-item:nth-child(1){
+	background: url(../img/slider1.jpg);
+}
+.slider-item:nth-child(2){
+	background: url(../img/slider2.jpg);
+}
+.slider-item:nth-child(3){
+	background: url(../img/slider3.jpg);
+}
+.slider-item:nth-child(4){
+	background: url(../img/slider4.jpg);
+}
+.slider-item:nth-child(5){
+	background: url(../img/slider5.jpg);
+}
+
+.slider-item-selected,
+.slider-item-next{
+	display: block;
+}
+
+.slider-item-selected{
+	left: 0;
+}
+
+// 距离父元素的左边的距离为父元素的宽度
+.slider-item-next{
+	left: 100%;
+}
+
+.slider-control{
+	line-height: normal;
+	position: absolute;
+	left: 185px;
+	bottom: 20px;
+	z-index: 2;
+}
+
+.slider-control i{
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	display: inline-block;
+	border: 1px solid blue;
+	margin: 0 20px;
+	background: #ccc;
+}
+
+.slider-control .slider-control-selected{
+	background: orange;
+}

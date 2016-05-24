@@ -1,0 +1,48 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.container{
+	width: 630px;
+	height: 354px;
+	margin: 0 auto;
+	border: 3px solid #ccc;
+	position: relative;
+	top: 100px;
+	overflow: hidden;
+}
+
+.list{
+	width: 5000px;
+	height: 354px;
+	position: absolute;
+	z-index: 1;
+}
+
+.list img{
+	float: left;
+}
+
+.slider-control{
+	width: 260px;
+	height: 10px;
+	left: 185px;
+	position: absolute;
+	bottom: 20px;
+	z-index: 2;
+}
+.slider-control span{
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	bottom: 20px;
+	cursor: pointer;
+	background: #ccc;
+	border:1px solid blue;
+	float: left;
+	margin: 0 20px;
+}
+.slider-control .selected{
+	background: orange;
+}
