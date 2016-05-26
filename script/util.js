@@ -50,8 +50,104 @@ function removeClass(element, className) {
 }
 
 /**
- * mini $
- *
+* 添加事件
+* @param {Element} element DOM元素
+* @param {string} event 事件名称
+* @param {function} listener 事件处理程序的函数
+*/
+var addEvent = function(element, event, listener) {
+    if (element.addEventListener) {
+        element.addEventListener(event, listener);
+    } else if (element.attachEvent) {
+        element.attachEvent("on" + event, listener);
+    }
+};
+
+/**
+* 删除事件
+* @param {Element} element DOM元素
+* @param {string} event 事件名称
+* @param {function} listener 事件处理程序的函数
+*/
+var removeEvent = function(element, event, listener) {
+    if (element.removeEventListener) {
+        element.removeEventListener(event, listener);
+    } else if (element.detachEvent) {
+        element.detachEvent("on" + event, listener);
+    }
+};
+
+/**
+* 事件代理
+* @param {Element} element DOM元素(父元素)
+* @param {string} tag 标签名
+* @param {string} eventName 事件名称
+* @param {function} listener 事件处理程序的函数
+*/
+var delegateEvent = function(element, tag, eventName, listener) {
+    addEvent(element, eventName, function(e) {
+        var event = e || window.event;
+        var target = event.target || event.srcElement; 
+        if (target && target.tagName.toLowerCase() == tag.toLowerCase()) {
+            listener.call(target, event);
+        }
+    });
+};
+
+/**
+* 封装AJAX
+* @param {string} url 发送请求的地址
+* @param {Object} options 发送请求的选项参数
+*/
+function ajax(url,options){
+    var options = options || {};
+    var data = stringifyData(options.data || {});
+    var type = {options.type || "GET"}.toUpperCase();
+
+    var xhr = null;
+    if(window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    if(type === "GET" && data){
+        url += url + (url.indexOf("?") >= 0?"&":"?") + data;
+    }
+    xhr.open(type,url,true);
+    if(type === "GET"){
+        xhr.send(null);
+    }else if(type === "POST"){
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xhr.send(data);
+    }
+
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === 4){
+            if(xhr.status >= 200 && xhr.status <300 || xhr.status === 304){
+                if(options.onsuccess){
+                    options.onsuccess(xhr.responseText,xhr.responseXML);
+                }else if(options.onfail){
+                    options.onfail();
+                }
+            }
+        }
+    };
+
+    return xhr;
+
+    function stringifyData(data){
+        var param = [];
+        for(var key in data){
+            if(data.hasOwnProperty(key)){
+                param.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+            }
+        }
+    }
+}
+
+/**
+ * 简易 $
  * @param {string} selector 选择器
  * @return {Array.<HTMLElement>} 返回匹配的元素列表
  */
@@ -206,3 +302,4 @@ function $(selector) {
 
     return result;
 }
+

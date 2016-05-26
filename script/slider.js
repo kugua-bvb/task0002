@@ -44,6 +44,7 @@ function contains(node1,node2){
 
 
 function crossElementBoundary(e) {
+    var e = e || window.event;
     // 当前处理事件的元素
     var currentTarget = e.currentTarget;
     // mouseover时，来源
@@ -85,26 +86,28 @@ var Slider = function(options){
 
     var self = this;
 
-    div.addEventListener('click', function (e) {
-        var node = e.target;
-        if (node.tagName === 'I' && !hasClass(node, self.getPartClass('item-selected'))) {
-            var index = parseInt(node.getAttribute('data-index'), 10);
+    delegateEvent(div,'i','click', function (e) {
+        var event = e || window.event;
+        var target = event.target || event.srcElement;
+        if (!hasClass(target, self.getPartClass('item-selected'))) {
+            var index = parseInt(target.getAttribute('data-index'), 10);
             self.goTo(index);
         }
-    }, false);
+    });
+
 
     var main = this._main;
-    main.addEventListener('mouseover', function (e) {
+    addEvent(main,'mouseover', function (e) {
         if (crossElementBoundary(e)) {
             self._clearTimer();
         }
-    }, false);
+    });
 
-    main.addEventListener('mouseout', function (e) {
+    addEvent(main,'mouseout', function (e) {
         if (crossElementBoundary(e)) {
             self.play();
         }
-    }, false);
+    });
 
     this._setCurrent();
     // init select
@@ -315,7 +318,6 @@ SlideEffect.prototype.switchTo = function (index, lastIndex) {
 SlideEffect.prototype.draw = function (percent) {
     var slider = this.target;
     var delta = (this.to - this.from) * percent;
-    //    var stageWidth = slider._stageWidth;
     var items = slider._items;
     var currentItem = items[this._lastIndex];
     var nextItem = items[this._index];
