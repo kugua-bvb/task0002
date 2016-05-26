@@ -102,7 +102,7 @@ var delegateEvent = function(element, tag, eventName, listener) {
 function ajax(url,options){
     var options = options || {};
     var data = stringifyData(options.data || {});
-    var type = {options.type || "GET"}.toUpperCase();
+    var type = (options.type || "GET").toUpperCase();
 
     var xhr = null;
     if(window.XMLHttpRequest){
